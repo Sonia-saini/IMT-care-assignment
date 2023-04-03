@@ -15,49 +15,57 @@ userRouter.post("/register", registerValidator, async (req, res) => {
     const user = await Usermodel.find({ email });
     console.log(user.length > 0);
     if (user.length === 0) {
-      bcrypt.hash(password, 8, async (err, password) => {
-        if (err) {
-          console.log(err);
-        } else {
+       let x=email.split("@");
+          if(x[1]==="admin.com"){
+            const user = new Usermodel({
+              name,
+              email,
+              password: password,
+              admin:true
+            });
+            await user.save();
+          }
+          else{
           const user = new Usermodel({
             name,
             email,
             password: password,
+            admin:false
           });
           await user.save();
-          res.status(201).send("Registration Successful");
         }
-      });
-    } else {
+          res.status(201).send("Registration Successful");
+       } else {
       res.send("this email id already exists");
     }
   } catch (error) {
     console.log("Some Error occurred, unable to Register.");
-    res.status(401).send(error);
+    res.status(400).send("Some Error occurred, unable to Register.");
   }
 });
 
 userRouter.post("/login", loginValidator, async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await Usermodel.find({ email });
-    const hash_password = user[0].password;
+    const user = await Usermodel.findOne({ email });
+
+    const hash_password = user.password;
     if (user && hash_password) {
-      console.log(user, "login id", user[0]._id);
-      var token = jwt.sign({ userID: user[0]._id }, process.env.key, {
+      console.log(user, "login id", user._id);
+      var token = jwt.sign({ userID: user._id }, process.env.key, {
         expiresIn: "24h",
       });
       
       
-      res.status(200).send({
+      res.status(200).json({
         msg: "LogIn successfully",
         token: token,
-       
+       user
         
       });
     }
   } catch (error) {
-    console.log("Some Error occurred, unable to Login.");
+    res.status(400).send("Some Error occurred, unable to Login.");
     console.log(error);
   }
 });
