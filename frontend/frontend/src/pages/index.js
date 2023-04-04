@@ -4,17 +4,25 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home({ blogs }) {
   const [q,setQ]=useState("")
   const [blog,setBlog]=useState([])
-  console.log(blogs.blog);
+  // console.log(blogs.blog);
   useEffect(()=>{
-fetch(`http://localhost:3005/blog?query=${q}`).then((res)=>res.json())
-.then(res=>setBlog(res.blog)).catch((err)=>console.log(err))
-  },[])
+    fetch(`http://localhost:3005/blog?title=${q}`).then((res)=>res.json())
+    .then(res=>setBlog(res.blog)).catch((err)=>console.log(err))
+  },[blog])
   console.log(blog)
+  const search=(e)=>{
+    console.log(e.key)
+if(e.key="ENTER"){
+    fetch(`http://localhost:3005/blog?title=${q}`).then((res)=>res.json())
+    .then(res=>setBlog(res.blog)).catch((err)=>console.log(err))}
+    setQ("")
+  }
   return (
     <>
       <Head>
@@ -23,26 +31,30 @@ fetch(`http://localhost:3005/blog?query=${q}`).then((res)=>res.json())
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <div className={styles.mainhead}>  <div className={styles.head}>
+      <Link href="/createPost">Post Blog</Link>
+<br/>
+        <input type="text" placeholder="...search" onChange={(e)=>setQ(e.target.value)} /></div></div>
       <main className={styles.main}>
-        <input type="text" placeholder="...search" onChange={(e)=>setQ(e.target.value)}/>
         <div>
           {blog.length===0?blogs.blog.map((el) => {
             return <Link href={`/content/${el._id}`}>
-              <div className="space-y-1 mt-5" key={el._id}>
+             <div className={styles.title} key={el._id}>
                 <h3 className="font-bold">{el.title}</h3>
 
-                <p>{el.content}...</p>
-                <img src={el.image} />
-              </div>
+                <p>{el.content}...</p></div>
+             
+             
+              
             </Link>;
           }):blog.map((el) => {
             return <Link href={`/content/${el._id}`}>
-              <div className="space-y-1 mt-5" key={el._id}>
+              <div className={styles.title} key={el._id}>
                 <h3 className="font-bold">{el.title}</h3>
 
-                <p>{el.content}...</p>
-                <img src={el.image} />
-              </div>
+                <p>{el.content}...</p></div>
+             
+             
             </Link>;
           })}
           

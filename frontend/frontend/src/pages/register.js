@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import React, { useState } from 'react'
-
+import style from "../styles/register.module.css"
 function register() {
     const [username, setuserName] = useState("");
     const [email, setEmail] = useState("");
@@ -60,12 +60,12 @@ function register() {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <main>
-          <div className="flex items-center justify-center min-h-screen bg-gray-">
-            <div className="px-8 py-6 mx-4 mt-4 text-left bg-white shadow-lg md:w-1/3 lg:w-1/3 sm:w-1/3">
-              <h3 className="text-2xl font-bold text-center">Join us</h3>
+        <main className={style.register}>
+          
+            
               <form onSubmit={handleSubmit} method="POST">
 <div className="mt-4">
+              <h1 className="text-2xl font-bold text-center">Join us</h1>
               
                   <div>
                     <label className="block" id="username">
@@ -133,8 +133,8 @@ function register() {
               </form>
               
               
-            </div>
-          </div>
+            
+          
         </main>
       </>
     );

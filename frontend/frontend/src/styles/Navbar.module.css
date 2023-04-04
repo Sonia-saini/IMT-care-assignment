@@ -1,0 +1,37 @@
+.main{
+   border-radius: 15px;
+   display: flex;
+   margin: auto;
+   background: #000;
+   align-items: flex-end;
+   justify-content: space-between;
+   padding: 0 2rem;
+   position: sticky;
+   z-index: 999;
+   top: 0;
+}
+.main>ul{
+    display: flex;
+    width:30%;
+    margin: auto;
+    list-style: none;
+    font-size: 22px;
+    justify-content: space-evenly;
+}
+.main ul a{
+text-decoration: none;
+color:white;
+padding:0 0.5rem;
+}
+.main h1{
+    color:white;
+    width:70%
+}
+.main>ul a:hover{
+scale: 120%;
+background-color: white;
+color: black;
+
+
+border-radius: 10px;
+}
