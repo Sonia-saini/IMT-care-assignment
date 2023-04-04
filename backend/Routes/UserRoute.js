@@ -34,9 +34,9 @@ userRouter.post("/register", registerValidator, async (req, res) => {
           });
           await user.save();
         }
-          res.status(201).send("Registration Successful");
+          res.status(201).json({msg:"Registration Successful"});
        } else {
-      res.send("this email id already exists");
+      res.json({msg:"this email id already exists"});
     }
   } catch (error) {
     console.log("Some Error occurred, unable to Register.");
