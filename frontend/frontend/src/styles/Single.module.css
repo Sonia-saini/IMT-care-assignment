@@ -1,0 +1,65 @@
+.single {
+    width:80%;
+    margin: auto;
+
+    
+}
+
+
+.single  .singlehead{
+    width:100%;
+    display: flex;
+    margin: auto;
+    justify-content: space-between;
+    
+    
+}
+.singlehead div{
+    width:10%;
+    display: flex;
+    justify-content: space-between;
+}
+.singlehead h3{
+    width: 90%;
+}
+.singlecontent{
+    width: 100%;
+    display: flex;
+    
+    margin: auto;
+    gap:1rem;
+
+}
+.singlecontent img{
+    width: 50%;
+    height: 300px
+}
+.singlehead button{
+background-color: transparent;
+border: none;
+font-size: 18px;
+width: auto;
+
+
+}
+.singlehead button :hover{
+scale: 110%;
+cursor: pointer;
+
+}
+.singlehead button:first-child:hover{
+color: rgb(197, 45, 45);
+}
+.single .comment{
+    display: flex;
+    width: 100%;
+margin:1rem auto;
+gap:1rem;
+}
+.single .comment button{
+color: white;
+background-color: black;
+border: none;
+border-radius: 10px;
+}
+

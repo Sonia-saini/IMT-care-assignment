@@ -9,7 +9,7 @@ const authentication = async (req, res, next) => {
 
   console.log(token, process.env.key);
   if (!token) {
-    return res.status(401).send({ message: "Token not found" });
+    return res.status(401).send({ msg: "Token not found" });
   }
   try {
     const verify = jwt.verify(token, process.env.key);
@@ -18,10 +18,10 @@ const authentication = async (req, res, next) => {
     if (user) {
       next();
     } else {
-      res.status(401).send({ message: "Invalid token" });
+      res.status(401).send({ msg: "Invalid token" });
     }
   } catch (e) {
-    res.status(401).send({ message: "Invalid token" });
+    res.status(401).send({ msg: "Invalid token" });
   }
 };
 

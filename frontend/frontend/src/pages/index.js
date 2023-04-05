@@ -4,25 +4,34 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
+import { useRouter } from "next/router";
+import {MdKeyboardDoubleArrowRight,MdKeyboardDoubleArrowLeft} from "react-icons/md"
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home({ blogs }) {
-  const [q,setQ]=useState("")
-  const [blog,setBlog]=useState([])
-  // console.log(blogs.blog);
-  useEffect(()=>{
-    fetch(`http://localhost:3005/blog?title=${q}`).then((res)=>res.json())
-    .then(res=>setBlog(res.blog)).catch((err)=>console.log(err))
-  },[blog])
-  console.log(blog)
-  const search=(e)=>{
-    console.log(e.key)
-if(e.key="ENTER"){
-    fetch(`http://localhost:3005/blog?title=${q}`).then((res)=>res.json())
-    .then(res=>setBlog(res.blog)).catch((err)=>console.log(err))}
-    setQ("")
-  }
+  const [q, setQ] = useState("");
+
+  const [page, setPage] = useState(1);
+  const router = useRouter();
+
+  const limit = 5;
+useEffect(()=>{
+  router.push(`/?page=${page}&limit=${limit}`)
+},[page])
+  const search = (e) => {
+    setQ(e.target.value);
+    router.push(`/?page=${page}&limit=${limit}&title=${e.target.value}`);
+    setQ("");
+  };
+
+  const next = () => {
+    setPage(page + 1);
+    router.push(`/?page=${page+1}&limit=${limit}`);
+  };
+  const prev = () => {
+    setPage(page - 1);
+    router.push(`/?page=${page-1}&limit=${limit}`);
+  };
   return (
     <>
       <Head>
@@ -31,42 +40,63 @@ if(e.key="ENTER"){
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className={styles.mainhead}>  <div className={styles.head}>
-      <Link href="/createPost">Post Blog</Link>
-<br/>
-        <input type="text" placeholder="...search" onChange={(e)=>setQ(e.target.value)} /></div></div>
+      <div className={styles.mainhead}>
+        {" "}
+        <div className={styles.head}>
+          <Link href="/createPost">Post Blog</Link>
+          <br />
+          <input type="text" placeholder="...search" onChange={search} />
+        </div>
+      </div>
       <main className={styles.main}>
         <div>
-          {blog.length===0?blogs.blog.map((el) => {
-            return <Link href={`/content/${el._id}`}>
-             <div className={styles.title} key={el._id}>
-                <h3 className="font-bold">{el.title}</h3>
+          {blogs.blog.map((el) => {
+                return (
+                  <Link href={`/content/${el._id}`}>
+                    <div className={styles.title} key={el._id}>
+                      <h3 className="font-bold">{el.title}</h3>
 
-                <p>{el.content}...</p></div>
-             
-             
-              
-            </Link>;
-          }):blog.map((el) => {
-            return <Link href={`/content/${el._id}`}>
-              <div className={styles.title} key={el._id}>
-                <h3 className="font-bold">{el.title}</h3>
+                      <p>{el.content}...</p>
+                    </div>
+                  </Link>
+                );
+              })}
+            
+            
+        </div>
+        <div className={styles.button}>
+       { page>1&&<button onClick={prev} disabled={page === 0}>
+          <MdKeyboardDoubleArrowLeft color="white"/> 
+        </button>}
+        <button>{page}</button>
+        <button onClick={next}><MdKeyboardDoubleArrowRight color="white"/></button>
 
-                <p>{el.content}...</p></div>
-             
-             
-            </Link>;
-          })}
-          
+        
         </div>
       </main>
     </>
   );
 }
 export async function getServerSideProps(context) {
-  let data = await fetch(`http://localhost:3005/blog`);
-  let res = await data.json();
-  return {
-    props: { blogs: JSON.parse(JSON.stringify(res)) },
-  };
+  console.log(context);
+  let title = context.query.title || "";
+  if (context.query.page) {
+    let data = await fetch(
+      `http://localhost:3005/blog?page=${context.query.page-1}&limit=${
+        context.query.limit
+      }&title=${title}`
+    );
+    let res = await data.json();
+    return {
+      props: { blogs: JSON.parse(JSON.stringify(res)) },
+    };
+  } else {
+    let data = await fetch(
+      `http://localhost:3005/blog?page=${0}&limit=${5}&title=${title}`
+    );
+    let res = await data.json();
+    return {
+      props: { blogs: JSON.parse(JSON.stringify(res)) },
+    };
+  }
 }

@@ -1,13 +1,19 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import style from "../styles/Login.module.css"
 
 function login() {
     const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const router=useRouter()
+  const [user,setUser]=useState({})
+  useEffect(()=>{
+    setUser(JSON.parse(sessionStorage.getItem("user"))||{})
+    
+  },[])
   const handle = (e) => {
     e.preventDefault();
 
@@ -35,7 +41,9 @@ function login() {
       
     setPassword("");
 sessionStorage.setItem("user",JSON.stringify({...resp.user,token:resp.token}))
-router.push("/")
+window.location.reload()
+
+// return router.push("/")
 }
 
           catch(err){
@@ -67,6 +75,9 @@ router.push("/")
     //     theme: "light",
     //   });
     
+}
+if(user.name){
+  router.push("/")
 }
   return (
     <>

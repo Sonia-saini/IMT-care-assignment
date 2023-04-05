@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
+import Index from '../../component/draft';
 
 function createPost() {
 const [cnt,setCnt]=useState("");
@@ -8,12 +9,12 @@ const [img,setImg]=useState("")
 const [user,setUser]=useState({})
 useEffect(()=>{
 
-setUser(JSON.parse(sessionStorage.getItem("user")))
+setUser(JSON.parse(sessionStorage.getItem("user"))||{})
 },[])
 console.log(user)
 const Submit = async (e) => {
     e.preventDefault();
-    const formBody = { content:cnt, title,image:img, userId:user._id };
+    const formBody = { content:cnt, title,image:img, userId:user?._id };
     try{
     let res = await fetch("http://localhost:3005/blog", {
       method: "POST",
@@ -50,6 +51,7 @@ const Submit = async (e) => {
                 <input type="file"onChange={(e)=>setImg(e.target.value)} value={img} placeholder='enter blog image'/>
 <button>Create Blog</button>
             </form>
+            <Index/>
         </main>
     </div>
   )

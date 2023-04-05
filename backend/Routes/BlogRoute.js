@@ -1,9 +1,10 @@
 const express = require("express");
 const { Blogmodel } = require("../Models/Blogmodel");
 const { Usermodel } = require("../Models/Usermodel");
+const { BlogValidator } = require("../Middlewares/Blogmiddle");
 const blogRouter = express.Router();
 
-blogRouter.post("/blog",async(req,res)=>{
+blogRouter.post("/blog",BlogValidator,async(req,res)=>{
 
     try{
 const blog=new Blogmodel(req.body)
@@ -14,14 +15,15 @@ res.status(400).send("blog post have some error")
     }
 })
 blogRouter.get("/blog",async(req,res)=>{
-
+const {page,limit}=req.query
+console.log(page,limit)
     try{
         if(req.query.title){
-        const blog=await Blogmodel.find({title:req.query.title})
+        const blog=await Blogmodel.find({title:req.query.title}).limit(limit).skip(page*limit)
 
 res.status(200).json({msg:"blog get request",blog})}
 else{
-    const blog=await Blogmodel.find()
+    const blog=await Blogmodel.find().limit(limit).skip(page*limit)
     res.status(200).json({msg:"blog get request",blog})
     
 }
@@ -42,7 +44,7 @@ res.status(400).send("blog post have some error")
 })
 blogRouter.delete("/blog/:id",async(req,res)=>{
 const {userid}=req.headers;
-console.log(req.headers)
+console.log(req.headers.userid,req.ha)
     try{
    const user=await Usermodel.findOne({_id:userid}) 
    const blogs=await Blogmodel.findOne({userId:userid,_id:req.params.id})

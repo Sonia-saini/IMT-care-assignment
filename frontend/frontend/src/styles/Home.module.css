@@ -68,3 +68,20 @@ scale: 105%;
   margin-bottom: 1rem;
   
 }
+.main .button{
+  display: flex;
+  width: 100%;
+  margin:14px auto;
+  justify-content: center;
+
+}
+.main .button button{
+  background-color:black;
+  color: white;
+  border: none;
+  font-size: 25px;
+  font-weight: 600;
+  word-spacing: -200px;
+  padding: 10px;
+  border-radius: 10px;
+}
