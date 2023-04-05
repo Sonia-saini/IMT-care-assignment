@@ -1,10 +1,20 @@
 const express = require("express");
+const path = require('path');
+const url = require('url');
 const { Blogmodel } = require("../Models/Blogmodel");
 const { Usermodel } = require("../Models/Usermodel");
 const { BlogValidator } = require("../Middlewares/Blogmiddle");
+const { Commentmodel } = require("../Models/Commentmodel");
 const blogRouter = express.Router();
 
 blogRouter.post("/blog",BlogValidator,async(req,res)=>{
+   
+    
+
+// construct a URL from the path
+
+
+   
 
     try{
 const blog=new Blogmodel(req.body)
@@ -91,16 +101,28 @@ blogRouter.patch("/blog/:id",async(req,res)=>{
     res.status(400).send("you have to login first")
         }
     })
-    blogRouter.patch("/blogcomment/:id",async(req,res)=>{
+    blogRouter.post("/blogcomment/:id",async(req,res)=>{
 
         try{
-            let blog=await Blogmodel.find({_id:req.params.id})
-           let x= blog[0].comment.push(req.body)
-           await Blogmodel.findByIdAndUpdate({_id:req.params.id},x)
+       
+            let x=new Commentmodel({...req.body,blogId:req.params.id})
+           console.log(x,"x")
+           await x.save()
+        // let y=await Blogmodel.findByIdAndUpdate({_id:req.params.id},x)
             // await blog[0].save()
-            res.status(200).json({msg:"comment done",blog})
+            res.status(200).json({msg:"comment done",comments:y})
         }catch(err){
             res.status(400).send("you have to login first") 
+        }
+    })
+    blogRouter.get("/blogcomment/:id",async(req,res)=>{
+        try{
+let comments=await Commentmodel.find({blogId:req.params.id})
+res.status(200).json({msg:"comment done",comments})
+
+        }
+        catch(err){
+          req.status(400).send("comment get have error")  
         }
     })
 module.exports = { blogRouter };

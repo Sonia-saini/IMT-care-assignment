@@ -22,18 +22,17 @@
 .singlehead h3{
     width: 90%;
 }
-.singlecontent{
+.singlecontent {
     width: 100%;
-    display: flex;
+   
+    
     
     margin: auto;
     gap:1rem;
 
 }
-.singlecontent img{
-    width: 50%;
-    height: 300px
-}
+
+
 .singlehead button{
 background-color: transparent;
 border: none;
@@ -61,5 +60,21 @@ color: white;
 background-color: black;
 border: none;
 border-radius: 10px;
+}
+.single div .commnt{
+width: 20%;
+display: flex;
+margin: 1rem 0;
+padding: 1rem;
+border-radius: 10px;
+box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+gap:10px;
+}
+.single div .commnt p:first-child{
+color:rgb(87, 87, 189);
+font-size: 18px;
+text-transform: uppercase;
+font-weight: 700;
+margin-top: 2px;
 }
 

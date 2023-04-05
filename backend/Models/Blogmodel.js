@@ -3,7 +3,8 @@ const blogschema = mongoose.Schema({
   title: String,
   content: String,
   userId: String,
-  comments:[{name:String,comment:String}],
+
+  
   image:String,
     
 });

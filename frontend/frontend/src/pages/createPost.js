@@ -1,10 +1,12 @@
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
-import Index from '../../component/draft';
+// import Index from '../../component/draft';
+import dynamic from 'next/dynamic'
 
+
+const Index=dynamic(()=>import("../../component/draft"),{ssr:false})
 function createPost() {
 const [cnt,setCnt]=useState("");
-const [title,setTitle]=useState("")
 const [img,setImg]=useState("")
 const [user,setUser]=useState({})
 useEffect(()=>{
@@ -42,15 +44,11 @@ const Submit = async (e) => {
     <div>
         <Head>
             <title>post blog</title>
-            
+            <meta charset="utf-8" />
         </Head>
-        <main>
-            <form onSubmit={Submit} >
-                <input type="text" onChange={(e)=>setCnt(e.target.value)} value={cnt} placeholder='enter blog content'/>
-                <input type="text"onChange={(e)=>setTitle(e.target.value)} value={title} placeholder='enter blog title'/>
-                <input type="file"onChange={(e)=>setImg(e.target.value)} value={img} placeholder='enter blog image'/>
-<button>Create Blog</button>
-            </form>
+        <main >
+        
+        
             <Index/>
         </main>
     </div>

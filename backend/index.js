@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
 });
 app.use("/", userRouter);
 app.use("/", blogRouter);
-
+app.use(express.static("uploads"))
 app.listen(process.env.PORT, async () => {
   try {
     await connection;

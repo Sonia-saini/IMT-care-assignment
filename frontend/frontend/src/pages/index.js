@@ -56,7 +56,8 @@ useEffect(()=>{
                     <div className={styles.title} key={el._id}>
                       <h3 className="font-bold">{el.title}</h3>
 
-                      <p>{el.content}...</p>
+                      <p className="w-full" dangerouslySetInnerHTML={{ __html: el?.content }} />
+
                     </div>
                   </Link>
                 );
